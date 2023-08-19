@@ -21,6 +21,7 @@ public class TaskController {
 
     @DeleteMapping("/{taskId}")
     public void deleteTask(@PathVariable Long taskId) {
+        System.out.println("Task " + taskId + " deleted");
     }
 
     @PutMapping("/{taskId}")

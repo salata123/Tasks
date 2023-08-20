@@ -34,11 +34,6 @@ public class TaskController {
         return taskMapper.mapToTaskDto(task);
     }
 
-//    @GetMapping("/{taskId}")
-//    public TaskDto getTask(@PathVariable Long taskId) {
-//        return new TaskDto(1L, "test title", "test_content");
-//    }
-
     @DeleteMapping("/{taskId}")
     public void deleteTask(@PathVariable Long taskId) {
         System.out.println("Task " + taskId + " deleted");

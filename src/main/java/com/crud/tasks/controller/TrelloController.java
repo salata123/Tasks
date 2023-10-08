@@ -31,23 +31,21 @@ public class TrelloController {
         return ResponseEntity.ok(trelloService.createTrelloCard(trelloCardDto));
     }
 
+    @GetMapping("boards/1")
+    public void getTrelloBoards1() {
+        List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
 
+        trelloBoards.forEach(trelloBoardDto -> {
+            System.out.println(trelloBoardDto.getId() + " - " + trelloBoardDto.getName());
+            System.out.println("This board contains lists: ");
+            trelloBoardDto.getLists().forEach(trelloList -> {
+                System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed());
+            });
+        });
+    }
 
-//    @GetMapping("boards")
-//    public void getTrelloBoards() {
-//        List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
-//
-//        trelloBoards.forEach(trelloBoardDto -> {
-//            System.out.println(trelloBoardDto.getId() + " - " + trelloBoardDto.getName());
-//            System.out.println("This board contains lists: ");
-//            trelloBoardDto.getLists().forEach(trelloList -> {
-//                System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed());
-//            });
-//        });
-//    }
-//
-//    @PostMapping("cards")
-//    public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
-//        return trelloClient.createNewCard(trelloCardDto);
-//    }
+    @PostMapping("cards/1")
+    public CreatedTrelloCard createTrelloCard1(@RequestBody TrelloCardDto trelloCardDto) {
+        return trelloClient.createNewCard(trelloCardDto);
+    }
 }

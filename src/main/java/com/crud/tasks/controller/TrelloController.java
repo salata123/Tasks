@@ -20,19 +20,8 @@ public class TrelloController {
     private final TrelloClient trelloClient;
     private final TrelloService trelloService;
 
-
     @GetMapping("boards")
-    public ResponseEntity<List<TrelloBoardDto>> getTrelloBoards() {
-        return ResponseEntity.ok(trelloService.fetchTrelloBoards());
-    }
-
-    @PostMapping("cards")
-    public ResponseEntity<CreatedTrelloCard> createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
-        return ResponseEntity.ok(trelloService.createTrelloCard(trelloCardDto));
-    }
-
-    @GetMapping("boards/1")
-    public void getTrelloBoards1() {
+    public List<TrelloBoardDto> getTrelloBoards1() {
         List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
 
         trelloBoards.forEach(trelloBoardDto -> {
@@ -42,10 +31,22 @@ public class TrelloController {
                 System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed());
             });
         });
+        return trelloBoards;
     }
 
-    @PostMapping("cards/1")
+    @PostMapping("cards")
     public CreatedTrelloCard createTrelloCard1(@RequestBody TrelloCardDto trelloCardDto) {
         return trelloClient.createNewCard(trelloCardDto);
     }
+
+    @GetMapping("boards/1")
+    public ResponseEntity<List<TrelloBoardDto>> getTrelloBoards() {
+        return ResponseEntity.ok(trelloService.fetchTrelloBoards());
+    }
+
+    @PostMapping("cards/1")
+    public ResponseEntity<CreatedTrelloCard> createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
+        return ResponseEntity.ok(trelloService.createTrelloCard(trelloCardDto));
+    }
+
 }

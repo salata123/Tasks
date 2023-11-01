@@ -1,10 +1,11 @@
 package com.crud.tasks.controller;
 
-import com.crud.tasks.domain.CreatedTrelloCard;
+import com.crud.tasks.domain.CreatedTrelloCardDto;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.client.TrelloClient;
+import com.crud.tasks.trello.facade.TrelloFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,36 +18,15 @@ import java.util.List;
 @CrossOrigin("*")
 public class TrelloController {
 
-    private final TrelloClient trelloClient;
-    private final TrelloService trelloService;
+    private final TrelloFacade trelloFacade;
 
     @GetMapping("boards")
-    public List<TrelloBoardDto> getTrelloBoards1() {
-        List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
-
-        trelloBoards.forEach(trelloBoardDto -> {
-            System.out.println(trelloBoardDto.getId() + " - " + trelloBoardDto.getName());
-            System.out.println("This board contains lists: ");
-            trelloBoardDto.getLists().forEach(trelloList -> {
-                System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed());
-            });
-        });
-        return trelloBoards;
+    public ResponseEntity<List<TrelloBoardDto>> getTrelloBoards() {
+        return ResponseEntity.ok(trelloFacade.fetchTrelloBoards());
     }
 
     @PostMapping("cards")
-    public CreatedTrelloCard createTrelloCard1(@RequestBody TrelloCardDto trelloCardDto) {
-        return trelloClient.createNewCard(trelloCardDto);
+    public ResponseEntity<CreatedTrelloCardDto> createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
+        return ResponseEntity.ok(trelloFacade.createCard(trelloCardDto));
     }
-
-    @GetMapping("boards/1")
-    public ResponseEntity<List<TrelloBoardDto>> getTrelloBoards() {
-        return ResponseEntity.ok(trelloService.fetchTrelloBoards());
-    }
-
-    @PostMapping("cards/1")
-    public ResponseEntity<CreatedTrelloCard> createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
-        return ResponseEntity.ok(trelloService.createTrelloCard(trelloCardDto));
-    }
-
 }

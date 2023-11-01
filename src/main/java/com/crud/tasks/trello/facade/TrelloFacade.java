@@ -5,16 +5,16 @@ import com.crud.tasks.mapper.TrelloMapper;
 import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.validator.TrelloValidator;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Component
 @RequiredArgsConstructor
 public class TrelloFacade {
-    private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(TrelloFacade.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrelloFacade.class);
 
     private final TrelloService trelloService;
     private final TrelloMapper trelloMapper;

@@ -29,11 +29,11 @@ public class SimpleEmailService {
     private SimpleMailMessage createMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
-//        if (mail.getMailToCc().isPresent()){
-//            mailMessage.setCc(mail.getMailToCc().get());
-//        } else {
-//            mailMessage.setCc("");
-//        }
+        if (mail.getMailToCc().isPresent()){
+            mailMessage.setCc(mail.getMailToCc().get());
+        } else {
+            mailMessage.setCc("");
+        }
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
 

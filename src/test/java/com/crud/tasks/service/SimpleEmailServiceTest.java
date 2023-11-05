@@ -18,31 +18,31 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class SimpleEmailServiceTest {
 
-//    @InjectMocks
-//    private SimpleEmailService simpleEmailService;
+    @InjectMocks
+    private SimpleEmailService simpleEmailService;
 
-//    @Mock
-//    private JavaMailSender javaMailSender;
+    @Mock
+    private JavaMailSender javaMailSender;
 
-//    @Test
-//    public void shouldSendEmail() {
-//        //Given
-//        Mail mail = new Mail("test@test.com", Optional.empty(), "Test", "Test Message");
-//
-//        SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        mailMessage.setTo(mail.getMailTo());
-//        if (mail.getMailToCc().isPresent()){
-//            mailMessage.setCc(mail.getMailToCc().get());
-//        } else {
-//            mailMessage.setCc("");
-//        }
-//        mailMessage.setSubject(mail.getSubject());
-//        mailMessage.setText(mail.getMessage());
-//
-//        //When
-//        simpleEmailService.send(mail);
-//
-//        //Then
-//        verify(javaMailSender, times(1)).send(mailMessage);
-//    }
+    @Test
+    public void shouldSendEmail() {
+        //Given
+        Mail mail = new Mail("test@test.com", Optional.empty(), "Test", "Test Message");
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(mail.getMailTo());
+        if (mail.getMailToCc().isPresent()){
+            mailMessage.setCc(mail.getMailToCc().get());
+        } else {
+            mailMessage.setCc("");
+        }
+        mailMessage.setSubject(mail.getSubject());
+        mailMessage.setText(mail.getMessage());
+
+        //When
+        simpleEmailService.send(mail);
+
+        //Then
+        verify(javaMailSender, times(1)).send(mailMessage);
+    }
 }

@@ -1,24 +1,24 @@
 package com.crud.tasks.trello.client;
 
 import com.crud.tasks.domain.*;
-import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.mapper.TrelloMapper;
 import com.crud.tasks.service.TrelloService;
-import com.crud.tasks.trello.config.TrelloConfig;
 import com.crud.tasks.trello.facade.TrelloFacade;
 import com.crud.tasks.trello.validator.TrelloValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,14 +31,10 @@ class TrelloFacadeTest {
     private TrelloService trelloService;
 
     @Mock
-    private TaskMapper taskMapper;
-    @Mock
     private TrelloValidator trelloValidator;
 
-    @Mock
-    private TrelloClient trelloClient;
-
-
+    @Captor
+    private ArgumentCaptor<TrelloCardDto> trelloCardDtoCaptor;
 
     @Mock
     private TrelloMapper trelloMapper;
@@ -113,33 +109,27 @@ class TrelloFacadeTest {
     }
 
     @Test
-    public void CoverageTests(){
-        //Given
-        TrelloCardDto trelloCardDto = new TrelloCardDto("TrelloCardDto Name", "TrelloCardDto Decription", "TrelloCardDto pos", "TrelloCardDto ListID");
+    public void CoverageTests1(){
+        // Given
+        TrelloCardDto trelloCardDto = new TrelloCardDto("TrelloCardDto Name", "TrelloCardDto Description", "TrelloCardDto pos", "TrelloCardDto ListID");
+        CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto("CreatedTrelloCardDto ID", "CreatedTrelloCardDto Name", "CreatedTrelloCardDto Short Url");
 
-        //When
-        CreatedTrelloCardDto createdTrelloCardDto2 = trelloClient.createNewCard(trelloCardDto);
+        when(trelloService.createTrelloCard(any(TrelloCardDto.class))).thenReturn(createdTrelloCardDto);
 
-        CreatedTrelloCardDto createdTrelloCardDto = trelloService.createTrelloCard(trelloCardDto);
-        //Then
-        assertEquals(createdTrelloCardDto2.getId(), trelloCardDto.getListId());
-        assertEquals(createdTrelloCardDto2.getName(), trelloCardDto.getName());
+        // When
+        CreatedTrelloCardDto result = trelloService.createTrelloCard(trelloCardDto);
+        verify(trelloService).createTrelloCard(trelloCardDtoCaptor.capture());
+        TrelloCardDto capturedTrelloCardDto = trelloCardDtoCaptor.getValue();
 
-        assertEquals(createdTrelloCardDto.getId(), trelloCardDto.getListId());
-        assertEquals(createdTrelloCardDto.getName(), trelloCardDto.getName());
-    }
+        // Then
+        assertNotNull(result);
+        assertEquals("CreatedTrelloCardDto ID", result.getId());
+        assertEquals("CreatedTrelloCardDto Name", result.getName());
+        assertEquals("CreatedTrelloCardDto Short Url", result.getShortUrl());
 
-    @Test
-    public void CoverageTests2(){
-        //Given
-        TaskDto taskDto = new TaskDto(1L, "TaskDto title", "TaskDto's content");
-
-        //When
-        Task task = taskMapper.mapToTask(taskDto);
-
-        //Then
-        assertEquals(taskDto.getId(), task.getId());
-        assertEquals(taskDto.getTitle(), task.getTitle());
-        assertEquals(taskDto.getContent(), task.getContent());
+        assertEquals("TrelloCardDto Name", capturedTrelloCardDto.getName());
+        assertEquals("TrelloCardDto Description", capturedTrelloCardDto.getDescription());
+        assertEquals("TrelloCardDto pos", capturedTrelloCardDto.getPos());
+        assertEquals("TrelloCardDto ListID", capturedTrelloCardDto.getListId());
     }
 }

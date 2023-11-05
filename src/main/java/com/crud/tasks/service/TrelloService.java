@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
@@ -29,6 +30,7 @@ public class TrelloService {
         ofNullable(newCard).ifPresent(card -> emailService.send(
                 new Mail(
                         adminConfig.getAdminMail(),
+                        Optional.of("mailToCc"),
                         SUBJECT,
                         "New card: " + trelloCardDto.getName() + " has been created on your Trello account"
                 )));

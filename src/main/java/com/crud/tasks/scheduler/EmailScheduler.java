@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static com.crud.tasks.service.TrelloService.SUBJECT;
 
 @Component
@@ -30,6 +32,7 @@ public class EmailScheduler {
         simpleEmailService.send(
                 new Mail(
                         adminConfig.getAdminMail(),
+                        Optional.of("mailToCc"),
                         SUBJECT,
                         "Currently in database you got: " + size + " " + taskString
                 )

@@ -15,4 +15,7 @@ public class AdminConfig {
 
     @Value("${info.company.name}")
     private String companyName;
+
+    @Value("${website.url}")
+    private String websiteUrl;
 }

@@ -34,6 +34,13 @@ public class TrelloService {
                         SUBJECT,
                         "New card: " + trelloCardDto.getName() + " has been created on your Trello account"
                 )));
+        ofNullable(newCard).ifPresent(card -> emailService.sendDaily(
+                new Mail(
+                        adminConfig.getAdminMail(),
+                        Optional.of("mailToCc"),
+                        "Daily task count subscription",
+                        "Today's task count"
+                )));
         System.out.println(trelloCardDto.getName());
         return newCard;
     }
